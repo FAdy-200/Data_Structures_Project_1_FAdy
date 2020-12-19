@@ -5,6 +5,7 @@ class TreeNode:
         self.right = right
         self.height = 1
 
+#dawood added a comment
 
 class AVLTree:
     def getHeight(self, root):
