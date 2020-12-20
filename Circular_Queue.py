@@ -7,7 +7,7 @@ class CircularDeque:
         self.capacity = capacity
         self.deque = [0] * capacity
         self.front = self.rear = -1
-
+#ssssa d
     def insertFront(self, value: int) -> bool:
         """
         Adds an item at the front of Deque.
