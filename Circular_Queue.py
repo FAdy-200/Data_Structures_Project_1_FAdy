@@ -5,67 +5,91 @@ class CircularDeque:
         Set the maximum size of the deque to be capacity.
         """
         self.capacity = capacity
-        self.deque = [0] * capacity
+        self.deque = [None] * capacity
         self.front = self.rear = -1
-#ssssa d
+
     def insertFront(self, value: int) -> bool:
         """
         Adds an item at the front of Deque.
         Return true if the operation is successful.
         """
+        if self.isFull():
+            return False
+        self.front += 1
+        self.front = self.front % self.capacity
+        self.deque[self.front] = value
+        if self.front == 0 and self.rear < 0:
+            self.rear = 0
+        return True
 
     def insertRear(self, value: int) -> bool:
         """
         Adds an item at the rear of Deque.
         Return true if the operation is successful.
         """
+        if self.isFull():
+            return False
+        self.rear -= 1
+        if self.rear < 0: self.rear = self.capacity - 1
+        if self.front < 0: self.front = self.capacity - 1
+        self.deque[self.rear] = value
+        return True
 
     def deleteFront(self) -> bool:
         """
         Deletes an item from the front of Deque.
         Return true if the operation is successful.
         """
+        if self.isEmpty():
+            return False
+        self.front -= 1
+        if self.front < 0: self.front = self.capacity - 1
+        if self.front == self.rear - 1:
+            self.front = -1
+            self.rear = -1
+        return True
 
     def deleteRear(self) -> bool:
         """
         Deletes an item from the rear of Deque.
         Return true if the operation is successful.
         """
+        if self.isEmpty():
+            return False
+        self.rear += 1
+        self.rear = self.rear % self.capacity
+        if (self.front == self.rear + 1) or (self.rear == 0 and self.front == self.capacity - 1):
+            self.front = -1
+            self.rear = -1
+        return True
 
-    def getFront(self) -> int:
+    def getFront(self):
         """
         Get the front item from the deque.
         """
+        if self.isEmpty():
+            return None
+        return self.deque[self.front]
 
-    def getRear(self) -> int:
+    def getRear(self):
         """
         Get the last item from the deque.
         """
+        if self.isEmpty():
+            return None
+        return self.deque[self.rear]
 
     def isEmpty(self) -> bool:
         """
         Checks whether the circular deque is empty or not.
         """
-        return True if self.front == -1 else False
+        return True if self.front == - 1 else False
 
     def isFull(self) -> bool:
         """
         Checks whether the circular deque is full or not.
         """
-        if (
-            self.front == 0 and self.rear == self.capacity - 1
-        ) or self.rear + 1 == self.front:
+        front = (self.front+1) % self.capacity
+        if front == self.rear:
             return True
         return False
-
-
-# capacity, value = 10, 1
-# cq = CircularDeque(capacity)
-# param_1 = cq.insertFront(value)
-# param_2 = cq.insertRear(value)
-# param_3 = cq.deleteFront()
-# param_4 = cq.deleteRear()
-# param_5 = cq.getFront()
-# param_6 = cq.getRear()
-# param_7 = cq.isEmpty()
-# param_8 = cq.isFull()
