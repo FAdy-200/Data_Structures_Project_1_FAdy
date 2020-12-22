@@ -5,7 +5,6 @@ class TreeNode:
         self.right = right
         self.height = 1
 
-#dawood added a comment
 
 class AVLTree:
     def getHeight(self, root):
@@ -33,7 +32,7 @@ class AVLTree:
             return root
         return self.getMinValueNode(root.left)
 
-    def insert(self, root, val):
+    def insert(self, root, val,r=None):
         """
         Insert node with target value "val"
         """
@@ -44,16 +43,26 @@ class AVLTree:
             root.left = self.insert(root.left, val)
         else:
             root.right = self.insert(root.right, val)
-
         root.height = 1 + max(self.getHeight(root.left),
                               self.getHeight(root.right))
+        if root.left is not None:
+            if root.right is not None:
+                if (root.left.height - root.right.height) > 1:
+                    root = self.rotateRight(root)
+                    # self.insert(r, root.val, r)
+                elif root.left.height - root.right.height < -1:
+                    root = self.rotateLeft(root)
+                    # self.insert(r, root.val, r)
+            elif root.height > 2:
+                root = self.rotateRight(root)
+                # self.insert(r, root.val, r)
+        elif root.height > 2:
+            root = self.rotateLeft(root)
+            # self.insert(r, root.val, r)
 
-        ##############################################################
-        ##                      YOUR CODE HERE                      ##
-        ##############################################################
 
         return root
-
+    # def reOrder(self,root,node,):
     def delete(self, root, val):
         """
         Delete a node with target value "val"
@@ -81,26 +90,39 @@ class AVLTree:
         root.height = 1 + max(self.getHeight(root.left),
                               self.getHeight(root.right))
 
-        ##############################################################
-        ##                      YOUR CODE HERE                      ##
-        ##############################################################
-
         return root
 
     def rotateLeft(self, root):
         """
         Left rotate the root tree
         """
-
-        ##############################################################
-        ##                      YOUR CODE HERE                      ##
-        ##############################################################
+        rr = root.right
+        root.right = rr.left
+        rr.left = root
+        root.height = 1 + max(self.getHeight(root.left),
+                              self.getHeight(root.right))
+        return rr
 
     def rotateRight(self, root):
         """
         Right rotate the root tree
         """
+        rr = root.left
+        root.left = rr.right
+        rr.right = root
+        root.height = 1 + max(self.getHeight(root.left),
+                              self.getHeight(root.right))
+        return rr
 
-        ##############################################################
-        ##                      YOUR CODE HERE                      ##
-        ##############################################################
+
+root = TreeNode(val=20)
+t = AVLTree()
+# x = [i for i in range(2, 8)]
+x = [10,30,25,5,40,35,45]
+# x = [4,9,1,5,8,7]
+for i in x:
+    if i == 7:
+        print("Sd")
+    root = t.insert(root, i, root)
+# root = t.insert(root,34)
+print()
