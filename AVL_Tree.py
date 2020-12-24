@@ -32,7 +32,7 @@ class AVLTree:
             return root
         return self.getMinValueNode(root.left)
 
-    def insert(self, root, val,r=None):
+    def insert(self, root, val, l=0, r=0):
         """
         Insert node with target value "val"
         """
@@ -40,30 +40,20 @@ class AVLTree:
         if not root:
             return TreeNode(val)
         elif val < root.val:
-            root.left = self.insert(root.left, val)
+            l += 1
+            r = 0
+            root.left = self.insert(root.left, val, l, r)
         else:
-            root.right = self.insert(root.right, val)
+            r += 1
+            l = 0
+            root.right = self.insert(root.right, val, l, r)
         root.height = 1 + max(self.getHeight(root.left),
                               self.getHeight(root.right))
-        if root.left is not None:
-            if root.right is not None:
-                if (root.left.height - root.right.height) > 1:
-                    root = self.rotateRight(root)
-                    # self.insert(r, root.val, r)
-                elif root.left.height - root.right.height < -1:
-                    root = self.rotateLeft(root)
-                    # self.insert(r, root.val, r)
-            elif root.height > 2:
-                root = self.rotateRight(root)
-                # self.insert(r, root.val, r)
-        elif root.height > 2:
-            root = self.rotateLeft(root)
-            # self.insert(r, root.val, r)
-
+        root = self.__rotate(root, l, r)
 
         return root
-    # def reOrder(self,root,node,):
-    def delete(self, root, val):
+
+    def delete(self, root, val, l=0, r=0):
         """
         Delete a node with target value "val"
         """
@@ -71,8 +61,12 @@ class AVLTree:
         if not root:
             return root
         elif val < root.val:
+            l += 1
+            r = 0
             root.left = self.delete(root.left, val)
         elif val > root.val:
+            r += 1
+            l = 0
             root.right = self.delete(root.right, val)
         else:
             if root.left is None:
@@ -86,10 +80,28 @@ class AVLTree:
             root.right = self.delete(root.right, temp.val)
         if root is None:
             return root
-
         root.height = 1 + max(self.getHeight(root.left),
                               self.getHeight(root.right))
+        root = self.__rotate(root, l, r)
 
+        return root
+
+    def __rotate(self, root, l, r):
+
+        if root.left is not None:
+            if root.right is not None:
+                if (root.left.height - root.right.height) > 1:
+                    if root.left.height == 3 and root.right.height == 1 and l == 2:
+                        root.left = self.rotateLeft(root.right)
+                    root = self.rotateRight(root)
+                elif root.left.height - root.right.height < -1:
+                    if root.left.height == 1 and root.right.height == 3 and r == 2:
+                        root.right = self.rotateRight(root.right)
+                    root = self.rotateLeft(root)
+            elif root.height > 2:
+                root = self.rotateRight(root)
+        elif root.height > 2:
+            root = self.rotateLeft(root)
         return root
 
     def rotateLeft(self, root):
@@ -101,6 +113,8 @@ class AVLTree:
         rr.left = root
         root.height = 1 + max(self.getHeight(root.left),
                               self.getHeight(root.right))
+        rr.height = 1 + max(self.getHeight(rr.left),
+                            self.getHeight(rr.right))
         return rr
 
     def rotateRight(self, root):
@@ -112,17 +126,6 @@ class AVLTree:
         rr.right = root
         root.height = 1 + max(self.getHeight(root.left),
                               self.getHeight(root.right))
+        rr.height = 1 + max(self.getHeight(rr.left),
+                            self.getHeight(rr.right))
         return rr
-
-
-root = TreeNode(val=20)
-t = AVLTree()
-# x = [i for i in range(2, 8)]
-x = [10,30,25,5,40,35,45]
-# x = [4,9,1,5,8,7]
-for i in x:
-    if i == 7:
-        print("Sd")
-    root = t.insert(root, i, root)
-# root = t.insert(root,34)
-print()
