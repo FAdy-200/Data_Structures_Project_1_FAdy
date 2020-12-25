@@ -58,7 +58,7 @@ class CircularDeque:
             return False
         self.front += 1
         self.front = self.front % self.capacity
-        if (self.rear == self.front + 1) or (self.front == 0 and self.rear == self.capacity - 1):
+        if (self.rear == self.front - 1) or (self.front == 0 and self.rear == self.capacity - 1):
             self.rear = -1
             self.front = -1
         return True

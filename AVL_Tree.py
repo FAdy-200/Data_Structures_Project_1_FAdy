@@ -129,3 +129,30 @@ class AVLTree:
         rr.height = 1 + max(self.getHeight(rr.left),
                             self.getHeight(rr.right))
         return rr
+
+
+root = TreeNode(val=20)
+t = AVLTree()
+# x = [i for i in range(2, 32)]
+x = [10, 30, 25, 5, 40, 35, 45, 34, 11]
+# x = [4,9,1,5,8,7]
+for i in x:
+    root = t.insert(root, i)
+root = t.delete(root, 34)
+root = t.delete(root, 45)
+root = t.delete(root, 40)
+
+
+def inorder(root, x=None):
+    if x is None:
+        x = []
+    if root is None:
+        return
+    else:
+        l = inorder(root.left, x)
+        x.append(root.val)
+        r = inorder(root.right, x)
+        return x
+
+
+# print(inorder(root))
