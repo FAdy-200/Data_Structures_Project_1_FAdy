@@ -1,5 +1,7 @@
 from AVL_Tree import AVLTree
 from Circular_Queue import CircularDeque
+
+
 # TODO: implement the right way
 
 def BFS(root, deq, i=1) -> object:
@@ -79,6 +81,6 @@ for num in nums:
 printLevelOrder(root)
 printLevelOrderNoCDQ(root)
 # myTree.insert(root, 7)
-myTree.delete(root,13)
+myTree.delete(root, 13)
 printLevelOrder(root)
 printLevelOrderNoCDQ(root)
