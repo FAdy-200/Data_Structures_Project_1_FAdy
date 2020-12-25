@@ -154,5 +154,4 @@ def inorder(root, x=None):
         r = inorder(root.right, x)
         return x
 
-
 # print(inorder(root))
